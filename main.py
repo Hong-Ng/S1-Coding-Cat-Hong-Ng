@@ -1,11 +1,12 @@
+import math
+
 def CompoundInterestCalc(pa,ir,cpt,pt,ptu):
 
     amount = pa*(1+(ir/(100*cpt)))**(cpt*pt)
     amount = round(amount,2)
     return amount
 
-def SimpleInterestCalc(pa,ir,cpt,pt,ptu):
-    
+def SimpleInterestCalc(pa,ir,cpt,pt,ptu):    
     amount = pa + (((pa*(ir/cpt)*(pt*cpt))/100))
     amount = round(amount,2)
     return amount
@@ -46,9 +47,12 @@ SimpleInterest['irt'] = cpt
 print('-----Compound Interest-----')
 pa = float(input("Enter the principal amount in $: "))
 ir = float(input('Enter the interest rate (enter 7% as 7): '))
-cpt = input('Enter the intrest rate time unit (Year, Quarter, Month, Week, Day): ')
+cpt = input('Enter the intrest rate time unit (Year, Quarter, Month, Week, Day, Custom): ')
 cpt = cpt.lower()
-cpt = TimePeriodYr[cpt]
+if cpt == 'custom':
+    cpt = int(input('Enter the number of compounding time periods per chosen time unit: '))
+else:
+    cpt = TimePeriodYr[cpt]
 
 CompoundInterest["principal"] = pa
 CompoundInterest["interest"] = ir
@@ -69,3 +73,21 @@ print("========================================================= Perth Modern Sc
 print(f'----- {pt} {ptu}s later ------')
 print (f'Simple Interest Account Balance: {SimpleInterest["amount"]}')
 print(f'Compound Interest Account Balance: {CompoundInterest["amount"]}')
+
+
+print("=====Module 2=====")
+pa = float(input("Enter the principal amount in $: "))
+ir = float(input('Enter the interest rate (enter 7% as 7): '))
+cpt = input('Enter the intrest rate time unit (Year, Quarter, Month, Week, Day, Custom): ')
+cpt = cpt.lower()
+cpt = TimePeriodYr[cpt]
+ta = float(input('Please enter your target amount: '))
+CompoundInterest["principal"] = pa
+CompoundInterest["interest"] = ir
+CompoundInterest['irt'] = cpt
+year = 1
+while year <= ta:
+    CompoundInterest['amount'] = round(CompoundInterestCalc(CompoundInterest['principal'],CompoundInterest['interest'],CompoundInterest['irt'],year,ptu),2)
+    year = year + 1
+
+print(f"After {year} year(s) you're account has reached ${CompoundInterest['amount']}")
