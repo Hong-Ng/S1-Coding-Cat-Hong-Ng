@@ -70,29 +70,33 @@ def Mod1():
     
 def Mod2():
     print("=====Module 2=====")
-    pa = float(input("Enter the principal amount in $: "))
-    ir = float(input('Enter the interest rate (enter 7% as 7): '))
-    irt = 1
+    P = int(input('Enter starting amount: '))
+    r = int(input('Enter interest rate: '))
+    it = input('Enter the interest rate time unit: ')
+    it = TimePeriod[it.lower()]
+    ct = input('Enter compounding time period: ')
+    time = ct
+    ct = TimePeriod[ct.lower()]
     ta = float(input('Please enter your target amount: '))
-    CompoundInterest["principal"] = pa
-    CompoundInterest["interest"] = ir
-    CompoundInterest['irt'] = irt
-    ptu = 'year'
-    time = ptu
-    ptu = 1
-    while year <= ta:
+    CompoundInterest["principal"] = P
+    CompoundInterest["interest"] = r
+    CompoundInterest['irt'] = it
+    CompoundInterest['amount'] = CompoundInterest['principal']
+    period = 1
+    Projection = []
+    while CompoundInterest['amount'] <= ta:
+        Projection.append(CompoundInterest['amount'])
         try:
-            CompoundInterest['amount'] = round(CompoundInterestCalc(CompoundInterest['principal'],CompoundInterest['interest'],CompoundInterest['irt'],year,ptu),2)
-            year = year + 1
-            Projection["Year", year] = CompoundInterest['amount']
+            CompoundInterest['amount'] = CompoundInterestCalc(CompoundInterest['principal'],CompoundInterest['interest'],CompoundInterest['irt'],ct,period,1)
+            period = period + 1
         except OverflowError:
             print('An Overflow Error has occured. You will be sent back to the home screen, please try changing the inputs to ensure this does not happen again.')
             print('Please feel free to feedback by calling 000 and telling them the code word "Im dying".')
             CompoundInterest['amount'] = 'ERROR'
-            
-    print(f"After {year} year(s) you're account has reached ${CompoundInterest['amount']}") 
+    Projection.append(CompoundInterest['amount'])       
+    print(f"After {period-1} compounding periods you're account has reached ${CompoundInterest['amount']}") 
     print(f'Forward Projection: {Projection}')
-    print(f'Time Taken: {year} {time}')
+    print(f'Time Taken: {period-1} compounding periods')
 
 SimpleInterest = {
     
@@ -102,9 +106,7 @@ CompoundInterest = {
     
 }
 
-Projection = {
-    
-}
+
 
 TimePeriod = {
     'yearly': 365,
