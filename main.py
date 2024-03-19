@@ -1,58 +1,60 @@
 import math
 
-def CompoundInterestCalc(pa,ir,cpt,pt,ptu):
-    pt = pt/ptu
-    amount = pa*(1+(ir/(100*cpt)))**(cpt*pt)
-    amount = round(amount,2)
-    return amount
+def CompoundInterestCalc(P,r,it,ct,k,t):
+    i = (r/(it/ct))/100
+    A = P*((1+i)**(k*t))
+    A = round(A,2)
+    return A
 
-def SimpleInterestCalc(pa,ir,cpt,pt,ptu):
-    pt = pt/ptu
-    amount = pa + (((pa*(ir/cpt)*(pt*cpt))/100))
-    amount = round(amount,2)
-    return amount
+def SimpleInterestCalc(P,r,it,kt,t):
+    i = r/100
+    A = P*i*((kt/it)*t) + P
+    return A
 
 def Mod1():
     print('==========Module 1==========')
     print('-----Simple Interest-----')
-    pa = float(input("Enter the principal amount in $: "))
-    ir = float(input('Enter the interest rate (enter 7% as 7): '))
-    cpt = input('Enter the intrest rate time unit (Year, Quarter, Month, Week, Day): ')
-    cpt = cpt.lower()
-    cpt = TimePeriodYr[cpt]
+    P = int(input('Enter starting amount: '))
+    r = int(input('Enter interest rate: '))
+    it = input('Enter the interest rate time unit: ')
+    it = TimePeriod[it.lower()]
 
-    SimpleInterest["principal"] = pa
-    SimpleInterest["interest"] = ir
-    SimpleInterest['irt'] = cpt
-    #Compound interest variables
+    SimpleInterest["principal"] = P
+    SimpleInterest["interest"] = r
+    SimpleInterest['irt'] = it
+    #Compound interest variables 
     print('-----Compound Interest-----')
-    pa = float(input("Enter the principal amount in $: "))
-    ir = float(input('Enter the interest rate (enter 7% as 7): '))
-    cpt = input('Enter the intrest rate time unit (Year, Quarter, Month, Week, Day, Custom): ')
-    cpt = cpt.lower()
-    if cpt == 'custom':
-        cpt = int(input('Enter the number of compounding time periods per chosen time unit: '))
+    P = int(input('Enter starting amount: '))
+    r = int(input('Enter interest rate: '))
+    it = input('Enter the interest rate time unit: ')
+    it = TimePeriod[it.lower()]
+    ct = input('Enter compounding time period: ')
+    
+    if ct == 'custom':
+        ct = int(input('Enter the number of compounding periods per interest rate time unit: '))
+        ct = it/ct
     else:
-        cpt = TimePeriodYr[cpt]
-
-    CompoundInterest["principal"] = pa
-    CompoundInterest["interest"] = ir
-    CompoundInterest['irt'] = cpt
+        ct = TimePeriod[ct.lower()]
+        
+    CompoundInterest["principal"] = P
+    CompoundInterest["interest"] = r
+    CompoundInterest['irt'] = it
 
     print("-----Future Projection Timeframes-----")
-    pt = int(input('Enter the amount of time to project into the future: '))
-    ptu = input('Enter the projection time unit (Year, Quarter, Month, Week, Day): ')
-    ptu = ptu.lower()
-    ptu = TimePeriodYr[ptu]
+    t = int(input('Enter amount of time to project into the future: '))
+    kt = input('Enter projection time unit: ')
+    time = kt
+    kt = TimePeriod[kt.lower()]
+    k = kt/ct
         
-    try:
-        SimpleInterest['amount'] = SimpleInterestCalc(SimpleInterest['principal'],SimpleInterest['interest'],SimpleInterest['irt'],pt,ptu)
+    try: 
+        SimpleInterest['amount'] = SimpleInterestCalc(SimpleInterest['principal'],SimpleInterest['interest'],SimpleInterest['irt'],kt,t)
     except OverflowError:
         print('An Overflow Error has occured. You will be sent back to the home screen, please try changing the inputs to ensure this does not happen again.')
         print('Please feel free to feedback by calling 000 and telling them the code word "Im dying".')
-        CompoundInterest['amount'] = 'ERROR'
+        SimpleInterest['amount'] = 'ERROR'
     try:
-        CompoundInterest['amount'] = CompoundInterestCalc(CompoundInterest['principal'],CompoundInterest['interest'],CompoundInterest['irt'],pt,ptu)
+        CompoundInterest['amount'] = CompoundInterestCalc(CompoundInterest['principal'],CompoundInterest['interest'],CompoundInterest['irt'],ct,k,t)
     except OverflowError:
         print('An Overflow Error has occured. You will be sent back to the home screen, please try changing the inputs to ensure this does not happen again.')
         print('Please feel free to feedback by calling 000 and telling them the code word "Im dying".')
@@ -62,7 +64,7 @@ def Mod1():
     print("========================================================= Perth Modern School Bank =========================================================")       
 
 
-    print(f'----- {pt} {ptu}s later ------')
+    print(f'----- {t} {time}s later ------')
     print (f'Simple Interest Account Balance: {SimpleInterest["amount"]}')
     print(f'Compound Interest Account Balance: {CompoundInterest["amount"]}')
     
@@ -70,21 +72,14 @@ def Mod2():
     print("=====Module 2=====")
     pa = float(input("Enter the principal amount in $: "))
     ir = float(input('Enter the interest rate (enter 7% as 7): '))
-    cpt = input('Enter the intrest rate time unit (Year, Quarter, Month, Week, Day, Custom): ')
-    cpt = cpt.lower()
-    time = cpt
-    if cpt == 'custom':
-        cpt = int(input('Enter the number of compounding time periods per chosen time unit: '))
-    else:
-        cpt = TimePeriodYr[cpt]
-    ptu = input('Enter the projection time unit (Year, Quarter, Month, Week, Day): ')
-    ptu = ptu.lower()
-    ptu = TimePeriodYr[ptu]
+    irt = 1
     ta = float(input('Please enter your target amount: '))
     CompoundInterest["principal"] = pa
     CompoundInterest["interest"] = ir
-    CompoundInterest['irt'] = cpt
-    year = 1
+    CompoundInterest['irt'] = irt
+    ptu = 'year'
+    time = ptu
+    ptu = 1
     while year <= ta:
         try:
             CompoundInterest['amount'] = round(CompoundInterestCalc(CompoundInterest['principal'],CompoundInterest['interest'],CompoundInterest['irt'],year,ptu),2)
@@ -111,18 +106,13 @@ Projection = {
     
 }
 
-TimePeriodYr = {
-    'year': 1,
-    'quarter': 4,
-    'month': 12,
-    'week': 52,
-    'day': 365
-}
-
-TimePeriodsMth = {
-    'week': 4,
-    'day': 30
-}    
+TimePeriod = {
+    'yearly': 365,
+    'quarterly': 91.25,
+    'monthly': 30.4167,
+    'weekly': 7,
+    'daily': 1
+} 
 
 print('==============================')
 print('==========Welcome to==========')
@@ -134,7 +124,7 @@ while True:
     print('1: Comparing Compound and Simple Interest accounts')
     print('2: Time for a Compound Account to reach a target')
     print('0: Exit')
-    menu = int(input())
+    menu = int(input('Type 1 or 2 to activate the corrresponding program. Type 0 to end the program: '))
     if menu == 0:
         print('Exit.exe Failed, Ending Program')
         break
