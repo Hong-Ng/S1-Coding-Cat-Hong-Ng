@@ -84,7 +84,7 @@ def Mod2():
     CompoundInterest['amount'] = CompoundInterest['principal']
     period = 1
     Projection = []
-    while CompoundInterest['amount'] <= ta:
+    while CompoundInterest['amount'] < ta:
         Projection.append(CompoundInterest['amount'])
         try:
             CompoundInterest['amount'] = CompoundInterestCalc(CompoundInterest['principal'],CompoundInterest['interest'],CompoundInterest['irt'],ct,period,1)
@@ -93,27 +93,93 @@ def Mod2():
             print('An Overflow Error has occured. You will be sent back to the home screen, please try changing the inputs to ensure this does not happen again.')
             print('Please feel free to feedback by calling 000 and telling them the code word "Im dying".')
             CompoundInterest['amount'] = 'ERROR'
+            
     Projection.append(CompoundInterest['amount'])       
     print(f"After {period-1} compounding periods you're account has reached ${CompoundInterest['amount']}") 
     print(f'Forward Projection: {Projection}')
-    print(f'Time Taken: {period-1} compounding periods')
+    print(f'Time Taken: {period-1} compounding periods\n')
+
+def Mod3():
+    print('=====Module 3=====')
+    print('ACCOUNT 1')
+    P = int(input('Enter starting amount: '))
+    r = int(input('Enter interest rate: '))
+    it = input('Enter the interest rate time unit: ')
+    it = TimePeriod[it.lower()]
+    ct = input('Enter compounding time period: ')
+    time = ct
+    ct = TimePeriod[ct.lower()]
+    CompoundInterest["principal"] = P
+    CompoundInterest["interest"] = r
+    CompoundInterest['irt'] = it
+    CompoundInterest['amount'] = CompoundInterest['principal']
+    CompoundInterest["principal"] = P
+    CompoundInterest["interest"] = r
+    CompoundInterest['irt'] = it
+
+    print(f"-----Future Projection Timeframe for Account 1-----")
+    t = int(input('Enter amount of time to project into the future: '))
+    kt = input('Enter projection time unit: ')
+    time = kt
+    kt = TimePeriod[kt.lower()]
+    k = kt/ct
+    Projection = []
+    try:
+        CompoundInterest['amount'] = CompoundInterestCalc(CompoundInterest['principal'],CompoundInterest['interest'],CompoundInterest['irt'],ct,k,t)
+    except OverflowError:
+        print('An Overflow Error has occured. You will be sent back to the home screen, please try changing the inputs to ensure this does not happen again.')
+        print('Please feel free to feedback by calling 000 and telling them the code word "Im dying".')
+        CompoundInterest['amount'] = 'ERROR'
+##############################################################
+    print('ACCOUNT 2')
+    P = int(input('Enter starting amount: '))
+    r = int(input('Enter interest rate: '))
+    it = input('Enter the interest rate time unit: ')
+    it = TimePeriod[it.lower()]
+    ct = input('Enter compounding time period: ')
+    time = ct
+    ct = TimePeriod[ct.lower()]
+    CompoundInterest2["principal"] = P
+    CompoundInterest2["interest"] = r
+    CompoundInterest2['irt'] = it
+    CompoundInterest2['amount'] = CompoundInterest['principal']
+    CompoundInterest2["principal"] = P
+    CompoundInterest2["interest"] = r
+    CompoundInterest2['irt'] = it
+
+    print(f"-----Future Projection Timeframe for Account 2-----")
+    t = int(input('Enter amount of time to project into the future: '))
+    kt = input('Enter projection time unit: ')
+    time = kt
+    kt = TimePeriod[kt.lower()]
+    k = kt/ct
+    Projection = []
+    try:
+        CompoundInterest2['amount'] = CompoundInterestCalc(CompoundInterest2['principal'],CompoundInterest2['interest'],CompoundInterest2['irt'],ct,k,t)
+    except OverflowError:
+        print('An Overflow Error has occured. You will be sent back to the home screen, please try changing the inputs to ensure this does not happen again.')
+        print('Please feel free to feedback by calling 000 and telling them the code word "Im dying".')
+        CompoundInterest2['amount'] = 'ERROR'
+    
+    print('===== Results =====')
+    print(f'Account 1 Balance: {CompoundInterest["amount"]}')
+    print(f'Account 2 Balance: {CompoundInterest2["amount"]}')
 
 SimpleInterest = {
     
 }
-
 CompoundInterest = {
     
 }
-
-
-
+CompoundInterest2= {
+    
+}
 TimePeriod = {
-    'yearly': 365,
-    'quarterly': 91.25,
-    'monthly': 30.4167,
-    'weekly': 7,
-    'daily': 1
+    'year': 365,
+    'quarter': 91.25,
+    'month': 30.4167,
+    'week': 7,
+    'day': 1
 } 
 
 print('==============================')
@@ -125,12 +191,18 @@ while True:
     print('Welcome to the Bank Of Mod, what would you like to do (Type "1" for Comparing Simple and Compound Interest)')
     print('1: Comparing Compound and Simple Interest accounts')
     print('2: Time for a Compound Account to reach a target')
+    print('3: Comparing 2 Compound Accounts')
     print('0: Exit')
-    menu = int(input('Type 1 or 2 to activate the corrresponding program. Type 0 to end the program: '))
+    menu = int(input('Type 1, 2 or 3 to activate the corrresponding program. Type 0 to end the program: '))
     if menu == 0:
         print('Exit.exe Failed, Ending Program')
         break
     elif menu == 1:
+        print()
         Mod1()
     elif menu == 2:
+        print()
         Mod2()
+    elif menu == 3:
+        print()
+        Mod3()
