@@ -113,9 +113,6 @@ def Mod3():
     CompoundInterest["interest"] = r
     CompoundInterest['irt'] = it
     CompoundInterest['amount'] = CompoundInterest['principal']
-    CompoundInterest["principal"] = P
-    CompoundInterest["interest"] = r
-    CompoundInterest['irt'] = it
 
     print(f"-----Future Projection Timeframe for Account 1-----")
     t = int(input('Enter amount of time to project into the future: '))
@@ -215,6 +212,30 @@ def Mod4():
     print(f'Forward Projection: {Projection}')
     print(f'Time Taken: {period-1} compounding periods\n')
 
+def Mod5():
+    P = 1000
+    print('Starting Amount: $1000')
+    r = 100
+    it = 'year'
+    print('Interest Rate: 100% per annum')
+    it = TimePeriod[it.lower()]
+    ct = input('Enter compounding time period (quarter,month,week,day,hour,10min): ')
+    time = ct
+    ct = TimePeriod[ct.lower()]
+    CompoundInterest["principal"] = P
+    CompoundInterest["interest"] = r
+    CompoundInterest['irt'] = it
+    CompoundInterest['amount'] = CompoundInterest['principal']
+    kt = TimePeriod['year']
+    k = kt/ct
+    try:
+        CompoundInterest['amount'] = CompoundInterestCalc(CompoundInterest['principal'],CompoundInterest['interest'],CompoundInterest['irt'],ct,k,1)
+    except OverflowError:
+        print('An Overflow Error has occured. You will be sent back to the home screen, please try changing the inputs to ensure this does not happen again.')
+        print('Please feel free to feedback by calling 000 and telling them the code word "Im dying".')
+        CompoundInterest['amount'] = 'ERROR'
+    print('===== 1 Year Later =====')
+    print(f'Amount Owed: {CompoundInterest["amount"]}\n')
     
 SimpleInterest = {
     
@@ -230,7 +251,11 @@ TimePeriod = {
     'quarter': 91.25,
     'month': 30.4167,
     'week': 7,
-    'day': 1
+    'day': 1,
+    'hour': 1/24,
+    '10min': 1/(24*6),
+    '1min': 1/(24*60),
+    '1sec': 1/(24*60*60)
 } 
 
 print('==============================')
@@ -244,8 +269,9 @@ while True:
     print('2: Time for a Compound Account to reach a target')
     print('3: Comparing 2 Compound Accounts')
     print('4: Regular Deposit Modeling')
+    print('5: Simulate Increase in Compounding Frequency')
     print('0: Exit')
-    menu = int(input('Type 1, 2, 3 or 4 to activate the corrresponding program. Type 0 to end the program: '))
+    menu = int(input('Type 1, 2, 3, 4 or 5 to activate the corrresponding program. Type 0 to end the program: '))
     if menu == 0:
         print('Exit.exe Failed, Ending Program')
         break
@@ -261,3 +287,6 @@ while True:
     elif menu == 4:
         print()
         Mod4()
+    elif menu == 5:
+        print()
+        Mod5()
