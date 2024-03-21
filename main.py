@@ -95,7 +95,7 @@ def Mod2():
             CompoundInterest['amount'] = 'ERROR'
             
     Projection.append(CompoundInterest['amount'])       
-    print(f"After {period-1} compounding periods you're account has reached ${CompoundInterest['amount']}") 
+    print(f"After {period-1} compounding periods your account has reached ${CompoundInterest['amount']}") 
     print(f'Forward Projection: {Projection}')
     print(f'Time Taken: {period-1} compounding periods\n')
 
@@ -165,6 +165,57 @@ def Mod3():
     print(f'Account 1 Balance: {CompoundInterest["amount"]}')
     print(f'Account 2 Balance: {CompoundInterest2["amount"]}')
 
+def Mod4():
+    print("=====Module 4=====")
+    P = int(input('Enter starting amount: '))
+    r = int(input('Enter interest rate: '))
+    it = input('Enter the interest rate time unit: ')
+    it = TimePeriod[it.lower()]
+    ct = input('Enter compounding time period: ')
+    ct = TimePeriod[ct.lower()]
+    CompoundInterest["principal"] = P
+    CompoundInterest["interest"] = r
+    CompoundInterest['irt'] = it
+    CompoundInterest['amount'] = CompoundInterest['principal']
+    period = 1
+    Projection = []
+    ta = float(input('Please enter your target amount: '))
+    if ta == 0:
+        t = int(input('In that case,Enter amount of time to project into the future: '))
+        kt = input('Enter projection time unit: ')
+        deposit = int(input('Enter the regular deposit per compounding period: '))
+        kt = TimePeriod[kt.lower()]
+        k = kt/ct
+        while period <= (t*k):
+            Projection.append(CompoundInterest['amount'])
+            try:
+                CompoundInterest['amount'] = CompoundInterestCalc(CompoundInterest['amount'],CompoundInterest['interest'],CompoundInterest['irt'],ct,1,1)
+                period = period + 1
+                CompoundInterest['amount'] = CompoundInterest['amount'] + deposit
+            except OverflowError:
+                print('An Overflow Error has occured. You will be sent back to the home screen, please try changing the inputs to ensure this does not happen again.')
+                print('Please feel free to feedback by calling 000 and telling them the code word "Im dying".')
+                CompoundInterest['amount'] = 'ERROR'
+    else:
+        deposit = int(input('Enter the regular deposit per compounding period: '))
+        while CompoundInterest['amount'] < ta:
+            Projection.append(CompoundInterest['amount'])
+            try:
+                CompoundInterest['amount'] = CompoundInterestCalc(CompoundInterest['amount'],CompoundInterest['interest'],CompoundInterest['irt'],ct,1,1)
+                period = period + 1 
+                CompoundInterest['amount'] = CompoundInterest['amount'] + deposit
+                print(CompoundInterest['amount'])
+            except OverflowError:
+                print('An Overflow Error has occured. You will be sent back to the home screen, please try changing the inputs to ensure this does not happen again.')
+                print('Please feel free to feedback by calling 000 and telling them the code word "Im dying".')
+                CompoundInterest['amount'] = 'ERROR'
+            
+    Projection.append(CompoundInterest['amount'])       
+    print(f"After {period-1} compounding periods your account has reached ${CompoundInterest['amount']}") 
+    print(f'Forward Projection: {Projection}')
+    print(f'Time Taken: {period-1} compounding periods\n')
+
+    
 SimpleInterest = {
     
 }
@@ -192,8 +243,9 @@ while True:
     print('1: Comparing Compound and Simple Interest accounts')
     print('2: Time for a Compound Account to reach a target')
     print('3: Comparing 2 Compound Accounts')
+    print('4: Regular Deposit Modeling')
     print('0: Exit')
-    menu = int(input('Type 1, 2 or 3 to activate the corrresponding program. Type 0 to end the program: '))
+    menu = int(input('Type 1, 2, 3 or 4 to activate the corrresponding program. Type 0 to end the program: '))
     if menu == 0:
         print('Exit.exe Failed, Ending Program')
         break
@@ -206,3 +258,6 @@ while True:
     elif menu == 3:
         print()
         Mod3()
+    elif menu == 4:
+        print()
+        Mod4()
