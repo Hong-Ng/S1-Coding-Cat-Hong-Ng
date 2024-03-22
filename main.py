@@ -6,10 +6,14 @@ def CompoundInterestCalc(P,r,it,ct,k,t):
     A = round(A,2)
     return A
 
-def SimpleInterestCalc(P,r,it,kt,t):
+def SimpleInterestCalc(P,r,it,kt,t ):
     i = r/100
     A = P*i*((kt/it)*t) + P
     return A
+
+def Summary(dict):
+    print(f'Principal Amount: ${dict["principal"]}')
+    print(f'Interest Rate: {dict["interest"]}% per {dict["irt"]} day(s)')
 
 def Mod1():
     print('==========Module 1==========')
@@ -39,7 +43,11 @@ def Mod1():
     CompoundInterest["principal"] = P
     CompoundInterest["interest"] = r
     CompoundInterest['irt'] = it
-
+    print('=====Summary=====')
+    Summary(SimpleInterest)
+    print('Compound Interest')
+    Summary(CompoundInterest)
+    print(f'Compounding every {ct} days\n')
     print("-----Future Projection Timeframes-----")
     t = int(input('Enter amount of time to project into the future: '))
     kt = input('Enter projection time unit: ')
@@ -84,6 +92,9 @@ def Mod2():
     CompoundInterest['amount'] = CompoundInterest['principal']
     period = 1
     Projection = []
+    print('=====Summary======')
+    Summary(CompoundInterest)
+    print(f'Compounding every {ct} days\n')
     while CompoundInterest['amount'] < ta:
         Projection.append(CompoundInterest['amount'])
         try:
@@ -113,6 +124,9 @@ def Mod3():
     CompoundInterest["interest"] = r
     CompoundInterest['irt'] = it
     CompoundInterest['amount'] = CompoundInterest['principal']
+    print('=====Summary======')
+    Summary(CompoundInterest)
+    print(f'Compounding every {ct} days\n')
 
     print(f"-----Future Projection Timeframe for Account 1-----")
     t = int(input('Enter amount of time to project into the future: '))
@@ -143,6 +157,9 @@ def Mod3():
     CompoundInterest2["principal"] = P
     CompoundInterest2["interest"] = r
     CompoundInterest2['irt'] = it
+    print('=====Summary======')
+    Summary(CompoundInterest)
+    print(f'Compounding every {ct} days\n')
 
     print(f"-----Future Projection Timeframe for Account 2-----")
     t = int(input('Enter amount of time to project into the future: '))
@@ -159,8 +176,8 @@ def Mod3():
         CompoundInterest2['amount'] = 'ERROR'
     
     print('===== Results =====')
-    print(f'Account 1 Balance: {CompoundInterest["amount"]}')
-    print(f'Account 2 Balance: {CompoundInterest2["amount"]}')
+    print(f'Account 1 Balance: ${CompoundInterest["amount"]}')
+    print(f'Account 2 Balance: ${CompoundInterest2["amount"]}')
 
 def Mod4():
     print("=====Module 4=====")
@@ -174,11 +191,14 @@ def Mod4():
     CompoundInterest["interest"] = r
     CompoundInterest['irt'] = it
     CompoundInterest['amount'] = CompoundInterest['principal']
+    print('=====Summary======')
+    Summary(CompoundInterest)
+    print(f'Compounding every {ct} days')
     period = 1
     Projection = []
     ta = float(input('Please enter your target amount: '))
     if ta == 0:
-        t = int(input('In that case,Enter amount of time to project into the future: '))
+        t = int(input('In that case, Enter amount of time to project into the future: '))
         kt = input('Enter projection time unit: ')
         deposit = int(input('Enter the regular deposit per compounding period: '))
         kt = TimePeriod[kt.lower()]
